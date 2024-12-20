@@ -6,43 +6,34 @@ public class Stock {
     private double open;
     private double high;
     private double low;
-    private double current;
-    private long timestamp;
+    private double close;
+    private double volume;
+    private double timestamp;
 
-    public Stock(String ticker, String APIname, long timestamp, double open, double high, double low, double current) {
-        this.APIname = APIname;
+    public Stock(String ticker, double open, double high, double low, double close, double volume) {
+        this.APIname = ticker;
         this.ticker = ticker;
         this.open = open;
         this.high = high;
         this.low = low;
-        this.current = current;
+        this.close = close;
+        this.volume = volume;
         this.timestamp = timestamp;
     }
 
     public String toString() {
         return "Stock{" +
-                "APIname = '" + APIname + "'" +
-                ", timestamp = " + timestamp +
+                "APIname='" + APIname + "'" +
+                "timestamp = " + timestamp +
                 ", open = " + open +
-                ", close = " + current +
+                ", close = " + close +
                 ", high = " + high +
                 ", low = " + low +
+                ", volume = " + volume +
                 "}";
     }
 
     public String getTicker() {
         return ticker;
     }
-
-    public String getApiName() { return APIname; }
-
-    public double getOpen() { return open; }
-
-    public double getHigh() { return high; }
-
-    public double getLow() { return low; }
-
-    public double getCurrent() { return current; }
-
-    public long getTimestamp() { return timestamp; }
 }

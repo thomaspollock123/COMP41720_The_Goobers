@@ -1,3 +1,3 @@
 FROM eclipse-temurin:21-jre
-COPY target/finnhub-*.jar /finnhub.jar
-CMD java -jar /finnhub.jar
+COPY target/ingestion-1.0-SNAPSHOT.jar /ingestion.jar
+CMD java -jar /ingestion.jar

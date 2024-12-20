@@ -17,15 +17,13 @@ public abstract class AbstractAPIScraper {
     private final HttpRequest request;
     private final KafkaProducer<String, String> kafkaProducer;
     private final String kafkaTopic;
-    private final double rate;
-    protected final String APIname;
-    private final String ticker;
+    private final int rate;
+    private final String APIname;
 
-    public AbstractAPIScraper(String kafkaServers, String kafkaTopic, String ticker, String APIurl, String APIname, double rate) throws URISyntaxException {
+    public AbstractAPIScraper(String kafkaServers, String kafkaTopic, String APIurl, String APIname, int rate) throws URISyntaxException {
         // Initialise the number of API polls per minute
         this.rate = rate;
         this.APIname = APIname;
-        this.ticker = ticker;
 
         // Setup Kafka properties
         Properties props = new Properties();
@@ -43,23 +41,27 @@ public abstract class AbstractAPIScraper {
 
     public void poll() {
         while (true) {
+            try {
                 // Fetch raw stock data from API
                 String rawData = fetchRawData();
 
                 // Transform the data to Stock object
-                Stock stock = transformData(ticker, rawData);
+                Stock stock = transformData(rawData);
 
                 // Publish stock object to Kafka topic
                 publishToKafka(stock);
 
                 // Wait until next poll
                 waitForPoll();
+            } catch (Exception e) {
+                System.out.println("Error during polling: " + e.getMessage());
+            }
         }
     }
 
     private void waitForPoll() {
         try {
-            Thread.sleep((long) (60000/rate));
+            Thread.sleep(60000/rate);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +77,7 @@ public abstract class AbstractAPIScraper {
             }
     }
 
-    public abstract Stock transformData(String ticker, String rawData);
+    public abstract Stock transformData(String rawData);
 
     public void publishToKafka(Stock stock) {
         String stockData = stock.toString();
