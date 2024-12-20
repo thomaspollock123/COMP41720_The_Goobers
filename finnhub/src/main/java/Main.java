@@ -34,7 +34,7 @@ public class Main {
         String APIurl = "https://finnhub.io/api/v1/quote?symbol=" + ticker + "&token=" + APIkey;
 
         // Define the number of polls per minute
-        int rate = 60;
+        double rate = 60;
 
         // Define kafka details
         String kafkaServers = "kafka:9092"; //CHANGE
