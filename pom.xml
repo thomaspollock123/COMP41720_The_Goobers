@@ -13,7 +13,6 @@
         <module>finnhub</module>
         <module>analytics</module>
         <module>prediction</module>
-        <module>kafka</module>
     </modules>
 
     <properties>

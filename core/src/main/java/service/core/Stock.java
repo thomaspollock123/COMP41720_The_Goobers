@@ -21,7 +21,7 @@ public class Stock {
 
     public String toString() {
         return "Stock{" +
-                "APIname='" + APIname + "'" +
+                "APIname = '" + APIname + "'" +
                 ", timestamp = " + timestamp +
                 ", open = " + open +
                 ", close = " + current +
