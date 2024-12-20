@@ -1,0 +1,8 @@
+services:
+  ingestion:
+    build: ingestion
+  prediction:
+    build: prediction
+  analytics:
+    build: analytics
+
