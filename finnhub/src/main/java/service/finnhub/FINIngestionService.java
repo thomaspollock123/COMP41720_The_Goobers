@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 
 public class FINIngestionService extends AbstractAPIScraper {
 
-    public FINIngestionService(String kafkaServers, String kafkaTopic, String ticker, String APIurl, String APIname, int rate) throws URISyntaxException, MalformedURLException {
+    public FINIngestionService(String kafkaServers, String kafkaTopic, String ticker, String APIurl, String APIname, double rate) throws URISyntaxException, MalformedURLException {
         super(kafkaServers, kafkaTopic, ticker, APIurl, APIname, rate);
     }
 

@@ -3,6 +3,10 @@ services:
     build: finnhub
     depends_on:
       - kafka
+  twelvedata:
+    build: twelvedata
+    depends_on:
+      - kafka
   kafka:
     image: 'bitnami/kafka'
     environment:
