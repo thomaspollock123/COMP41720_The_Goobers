@@ -9,8 +9,8 @@ public class Stock {
     private double current;
     private double timestamp;
 
-    public Stock(String ticker, double timestamp, double open, double high, double low, double current) {
-        this.APIname = ticker;
+    public Stock(String ticker, String APIname, double timestamp, double open, double high, double low, double current) {
+        this.APIname = APIname;
         this.ticker = ticker;
         this.open = open;
         this.high = high;
@@ -22,7 +22,7 @@ public class Stock {
     public String toString() {
         return "Stock{" +
                 "APIname='" + APIname + "'" +
-                "timestamp = " + timestamp +
+                ", timestamp = " + timestamp +
                 ", open = " + open +
                 ", close = " + current +
                 ", high = " + high +
