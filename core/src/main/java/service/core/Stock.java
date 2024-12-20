@@ -6,18 +6,16 @@ public class Stock {
     private double open;
     private double high;
     private double low;
-    private double close;
-    private double volume;
+    private double current;
     private double timestamp;
 
-    public Stock(String ticker, double open, double high, double low, double close, double volume) {
+    public Stock(String ticker, double timestamp, double open, double high, double low, double current) {
         this.APIname = ticker;
         this.ticker = ticker;
         this.open = open;
         this.high = high;
         this.low = low;
-        this.close = close;
-        this.volume = volume;
+        this.current = current;
         this.timestamp = timestamp;
     }
 
@@ -26,10 +24,9 @@ public class Stock {
                 "APIname='" + APIname + "'" +
                 "timestamp = " + timestamp +
                 ", open = " + open +
-                ", close = " + close +
+                ", close = " + current +
                 ", high = " + high +
                 ", low = " + low +
-                ", volume = " + volume +
                 "}";
     }
 
