@@ -13,6 +13,7 @@
         <module>finnhub</module>
         <module>analytics</module>
         <module>prediction</module>
+        <module>twelvedata</module>
     </modules>
 
     <properties>

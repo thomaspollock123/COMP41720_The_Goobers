@@ -17,11 +17,11 @@ public abstract class AbstractAPIScraper {
     private final HttpRequest request;
     private final KafkaProducer<String, String> kafkaProducer;
     private final String kafkaTopic;
-    private final int rate;
+    private final double rate;
     protected final String APIname;
     private final String ticker;
 
-    public AbstractAPIScraper(String kafkaServers, String kafkaTopic, String ticker, String APIurl, String APIname, int rate) throws URISyntaxException {
+    public AbstractAPIScraper(String kafkaServers, String kafkaTopic, String ticker, String APIurl, String APIname, double rate) throws URISyntaxException {
         // Initialise the number of API polls per minute
         this.rate = rate;
         this.APIname = APIname;
@@ -59,7 +59,7 @@ public abstract class AbstractAPIScraper {
 
     private void waitForPoll() {
         try {
-            Thread.sleep(60000/rate);
+            Thread.sleep((long) (60000/rate));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
