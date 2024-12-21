@@ -7,9 +7,9 @@ public class Stock {
     private double high;
     private double low;
     private double current;
-    private double timestamp;
+    private long timestamp;
 
-    public Stock(String ticker, String APIname, double timestamp, double open, double high, double low, double current) {
+    public Stock(String ticker, String APIname, long timestamp, double open, double high, double low, double current) {
         this.APIname = APIname;
         this.ticker = ticker;
         this.open = open;
