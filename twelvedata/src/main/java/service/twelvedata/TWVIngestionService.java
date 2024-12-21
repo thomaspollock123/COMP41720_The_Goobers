@@ -19,7 +19,7 @@ public class TWVIngestionService extends AbstractAPIScraper {
         return new Stock(
                 ticker,
                 APIname,
-                json.getDouble("timestamp"),
+                json.getLong("timestamp"),
                 json.getDouble("open"),
                 json.getDouble("high"),
                 json.getDouble("low"),
