@@ -14,6 +14,7 @@
         <module>analytics</module>
         <module>prediction</module>
         <module>twelvedata</module>
+        <module>stockdata</module>
     </modules>
 
     <properties>
