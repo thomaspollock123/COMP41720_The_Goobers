@@ -33,4 +33,16 @@ public class Stock {
     public String getTicker() {
         return ticker;
     }
+
+    public String getApiName() { return APIname; }
+
+    public double getOpen() { return open; }
+
+    public double getHigh() { return high; }
+
+    public double getLow() { return low; }
+
+    public double getCurrent() { return current; }
+
+    public long getTimestamp() { return timestamp; }
 }
