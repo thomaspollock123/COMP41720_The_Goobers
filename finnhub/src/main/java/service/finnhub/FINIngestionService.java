@@ -19,7 +19,7 @@ public class FINIngestionService extends AbstractAPIScraper {
         return new Stock(
                 ticker,
                 APIname,
-                json.getDouble("t"),
+                json.getLong("t"),
                 json.getDouble("o"),
                 json.getDouble("h"),
                 json.getDouble("l"),
