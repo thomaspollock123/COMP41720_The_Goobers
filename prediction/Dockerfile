@@ -1,3 +1,8 @@
-FROM eclipse-temurin:21-jre
-COPY target/prediction-1.0-SNAPSHOT.jar /prediction.jar
-CMD java -jar /prediction.jar
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app/ ./app
+COPY models/ ./models
+EXPOSE 8080
+CMD ["python", "app/main.py"]

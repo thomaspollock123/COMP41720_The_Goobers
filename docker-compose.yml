@@ -1,14 +1,14 @@
 services:
   finnhub:
-    build: finnhub
+    build: ./finnhub
     depends_on:
       - kafka
   twelvedata:
-    build: twelvedata
+    build: ./twelvedata
     depends_on:
       - kafka
   stockdata:
-    build: stockdata
+    build: ./stockdata
     depends_on:
       - kafka
   kafka:
@@ -25,8 +25,16 @@ services:
     ports:
       - "9092:9092"
       - "9093:9093"
-  #prediction:
-  #  build: prediction
+  prediction:
+    build: ./prediction
+    depends_on:
+    - kafka
+    volumes:
+      - ./models:/models
+    environment:
+      - PYTHON UNBUFFERED=1
+    ports:
+      - "8080:8080"
   #analytics:
   #  build: analytics
 
