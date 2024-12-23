@@ -8,13 +8,13 @@ from pymongo import MongoClient
 from urllib.parse import quote_plus
 import time
 
-"""try:
+try:
     print('Welcome to parse engine')
     consumer = KafkaConsumer('stockData', bootstrap_servers='kafka:9092', value_deserializer=lambda x: json.loads(x.decode('utf-8')))
     for message in consumer:
         print(message)
 except Exception as e:
-    print(e)"""
+    print(e)
 
 # MongoDB Cluster = TheGooberCluster
 password = quote_plus("C0OZACjKnWMF4GQz")
@@ -123,8 +123,9 @@ def kafka_output2():
     try:
         #print('Goodbye to parse engine')
         prediction_data = test_run()
+        print(prediction_data[0])
         producer = KafkaProducer(bootstrap_servers='kafka:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-        producer.send('stockData', prediction_data[0])
+        producer.send('stockData', value=prediction_data[0])
         producer.flush()
     except Exception as e:
         print(e)
