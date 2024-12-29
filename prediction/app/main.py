@@ -1,7 +1,6 @@
 import schedule
 from kafka import KafkaProducer, KafkaConsumer
 from kafka.errors import KafkaError
-from datetime import datetime
 import pandas as pd
 from joblib import load
 import json
@@ -50,18 +49,6 @@ def kafka_input(data):
     print(data_json)
     input_data = pd.DataFrame([data_json])
     return input_data
-
-"""def model_load(model_data):
-    # Loads model into process
-    try:
-        data = load(model_data)
-        model = data['model']
-        scaler = data['scaler']
-        return model, scaler
-    except FileNotFoundError:
-        print(f"File {model_data} not found")
-    except Exception as e:
-        print(f"Error: {e}")"""
 
 def load_data(input_data, model, scaler):
     # Loads Kafka input data and returns predictions
@@ -143,83 +130,3 @@ print("Starting prediction engine...")
 while True:
     schedule.run_pending()
     time.sleep(1)
-
-"""def test_run():
-    consumer = KafkaConsumer('stockData', bootstrap_servers='kafka:9092', value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-    for message in consumer:
-        print(f"Received message: {message.value}")
-    ab = message.value
-    #a = kafka_input({"APIname": "finnhub", "timestamp": datetime(2024, 12, 12, 21, 59, 29), "open": 248.04, "close": 254.49, "high": 255.0, "low": 245.69})
-    b = model_load(model_file)
-    if b and b[0] and b[1]:
-        c = load_data(ab, b[0], b[1])
-        d = kafka_output(c)
-        return d
-
-def kafka_output2():
-    try:
-        #print('Goodbye to parse engine')
-        prediction_data = test_run()
-        producer = KafkaProducer(bootstrap_servers='kafka:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-        # Test if Kafka is accessible by sending a message
-        def on_send_success(record_metadata):
-            print(f"Message sent successfully to {record_metadata.topic} partition {record_metadata.partition} with offset {record_metadata.offset}")
-            return
-        def on_send_error(excp):
-            print(f"Error occurred while sending message: {excp}")
-            return
-        future = producer.send('stockData', value=prediction_data[0])
-        future.add_callback(on_send_success)
-        future.add_errback(on_send_error)
-        producer.flush()
-        print(prediction_data[0])
-    except KafkaError as ke:
-        print(f"KafkaError: {ke}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-print("Starting the prediction engine...")
-schedule.every(2).seconds.do(kafka_output2)
-while True:
-    schedule.run_pending()
-    time.sleep(2)"""
-
-"""try:
-    print('Welcome to parse engine')
-    consumer = KafkaConsumer('stockData', bootstrap_servers='kafka:9092', value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-    for message in consumer:
-        print(message)
-except Exception as e:
-    print(e)"""
-
-"""cl = collection.find().sort("_id", -1).limit(20)
-db_data = pd.DataFrame(data=cl).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])"""
-
-"""client_local = MongoClient()
-db_local = client_local["apple_stock"]
-collection_local = db_local["stock_data"]
-cl_local = collection_local.find().sort("_id", -1).limit(20)
-db_data_local = pd.DataFrame(data=cl_local).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-print(db_data_local)
-cl_local = collection_local.find().sort("_id", -1).limit(1)
-db_data_local = pd.DataFrame(data=cl_local).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-insert_data = db_data_local.to_dict(orient="records")
-collection_local.insert_one({"APIname": "finnhub", "timestamp": datetime(2024, 12, 12, 21, 59, 29), "open": 248.04, "close": 254.49, "high": 255.0, "low": 245.69})
-last_insert = collection_local.find_one(sort=[("_id", -1)])
-collection_local.delete_one({"_id": last_insert["_id"]})
-cl_local = collection_local.find().sort("_id", -1).limit(6)
-db_data_test = pd.DataFrame(data=cl_local).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-print(db_data_test)"""
-
-# cl = collection.find().sort("_id", -1).limit(20)
-# db_data = pd.DataFrame(data=cl).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-
-
-"""try:
-    print('Goodbye to parse engine')
-    producer = KafkaProducer(bootstrap_servers='kafka:9092')
-    producer.send('finnhub', value=test_run())
-    producer.flush()
-except Exception as e:
-    print(e)
-    pass"""
