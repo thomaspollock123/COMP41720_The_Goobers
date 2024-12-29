@@ -5,4 +5,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ ./app
 COPY models/ ./models
 EXPOSE 8080
+ENV PYTHONUNBUFFERED=1
 CMD ["python", "app/main.py"]
