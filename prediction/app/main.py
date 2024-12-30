@@ -25,27 +25,10 @@ except FileNotFoundError:
 except Exception as e:
     print(f"Error: {e}")
 
-def input_preprocessing(data):
-    # Converts "ingestion-service" KafkaProducer data stream input to JSON format
-    try:
-        if data.startswith("Stock{") and data.endswith("}"):
-            data = data[len("Stock{"):-1]
-        data = data.replace("=", ":").replace("'", '"')
-        data = data.replace("APIname", "\"APIname\"")
-        data = data.replace("timestamp", "\"timestamp\"")
-        data = data.replace("open", "\"open\"")
-        data = data.replace("close", "\"close\"")
-        data = data.replace("high", "\"high\"")
-        data = data.replace("low", "\"low\"")
-        return "{" + data + "}"
-    except Exception as e:
-        raise ValueError(f"Failed to preprocess data to JSON: {data}. Error: {e}")
-
 def kafka_input(data):
     # Takes transformed data from "ingestion-service" and converts to readable format for predictions
-    data_input = input_preprocessing(data)
-    print(data_input)
-    data_json = json.loads(data_input)
+    print(data)
+    data_json = json.loads(data)
     print(data_json)
     input_data = pd.DataFrame([data_json])
     return input_data
@@ -70,7 +53,7 @@ def timestamp_feature_creation(input_dataframe):
     if 'timestamp' not in input_dataframe.columns:
         raise KeyError("'timestamp' column missing in input dataframe")
     input_dataframe['timestamp'] = pd.to_datetime(input_dataframe['timestamp'], unit='s')
-    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[ns]')
+    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[s]')
     input_dataframe['year'] = input_dataframe['timestamp'].dt.year
     input_dataframe['month'] = input_dataframe['timestamp'].dt.month
     input_dataframe['day'] = input_dataframe['timestamp'].dt.day
@@ -116,7 +99,7 @@ def kafka_pipeline():
             input_data = kafka_input(message.value)
             prediction_data = load_data(input_data, model, scaler)
             output_data = kafka_output(prediction_data)
-            future = producer.send('stockData', value=output_data[0])
+            future = producer.send('predictions', value=output_data[0])
             future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}"))
             future.add_errback(lambda error: print(f"Error sending message: {error}"))
             producer.flush()
@@ -125,8 +108,13 @@ def kafka_pipeline():
     except Exception as e:
         print(f"Error in pipeline: {e}")
 
-schedule.every(5).seconds.do(kafka_pipeline)
+#schedule.every(5).seconds.do(kafka_pipeline)
+
+# Wait for the kafka service to start
+time.sleep(5)
 print("Starting prediction engine...")
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+kafka_pipeline()
+
+#while True:
+#    schedule.run_pending()
+#    time.sleep(1)
