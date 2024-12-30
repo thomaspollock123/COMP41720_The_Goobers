@@ -27,9 +27,7 @@ except Exception as e:
 
 def kafka_input(data):
     # Takes transformed data from "ingestion-service" and converts to readable format for predictions
-    #print(data)
     data_json = json.loads(data)
-    #print(data_json)
     input_data = pd.DataFrame([data_json])
     return input_data
 
@@ -53,7 +51,7 @@ def timestamp_feature_creation(input_dataframe):
     if 'timestamp' not in input_dataframe.columns:
         raise KeyError("'timestamp' column missing in input dataframe")
     input_dataframe['timestamp'] = pd.to_datetime(input_dataframe['timestamp'], unit='s')
-    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[s]')
+    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[ns]')
     input_dataframe['year'] = input_dataframe['timestamp'].dt.year
     input_dataframe['month'] = input_dataframe['timestamp'].dt.month
     input_dataframe['day'] = input_dataframe['timestamp'].dt.day
@@ -84,6 +82,7 @@ def kafka_output(input_dataframe):
     # Converts predictions for Kafka stream transfer and sends to "analytics-service" module
     json_string = input_dataframe.to_json(orient='records')
     output = json.loads(json_string)
+    output[0]['timestamp'] = output[0]['timestamp'] // 1000
     return output
 
 def kafka_pipeline():
@@ -98,9 +97,8 @@ def kafka_pipeline():
             input_data = kafka_input(message.value)
             prediction_data = load_data(input_data, model, scaler)
             output_data = kafka_output(prediction_data)
-            print("Sending output:", output_data)
             future = producer.send('predictions', value=output_data[0])
-            future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}"))
+            future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}, {output_data[0]}"))
             future.add_errback(lambda error: print(f"Error sending message: {error}"))
             producer.flush()
     except KafkaError as ke:
@@ -108,13 +106,8 @@ def kafka_pipeline():
     except Exception as e:
         print(f"Error in pipeline: {e}")
 
-#schedule.every(5).seconds.do(kafka_pipeline)
-
-# Wait for the kafka service to start
-time.sleep(5)
+schedule.every(5).seconds.do(kafka_pipeline)
 print("Starting prediction engine...")
-kafka_pipeline()
-
-#while True:
-#    schedule.run_pending()
-#    time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(3)
