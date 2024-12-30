@@ -22,6 +22,7 @@ public class Stock {
     public String toString() {
         return "{" +
                 "\"APIname\": \"" + APIname + "\"" +
+                ", \"ticker\": \"" + ticker + "\"" +
                 ", \"timestamp\": " + timestamp +
                 ", \"open\": " + open +
                 ", \"close\": " + current +
