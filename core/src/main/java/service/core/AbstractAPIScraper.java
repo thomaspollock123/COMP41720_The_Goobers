@@ -53,7 +53,7 @@ public abstract class AbstractAPIScraper {
                     // Publish stock object to Kafka topic
                     publishToKafka(stock);
                 }
-                
+
                 // Wait until next poll
                 waitForPoll();
         }

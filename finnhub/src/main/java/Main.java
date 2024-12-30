@@ -8,7 +8,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) throws MalformedURLException, URISyntaxException {
         // Ingestion service for ticker
-        String ticker = "AAPL";
+        String ticker = args[0];
 
         // Load properties from the config.properties file in resources
         Properties prop = new Properties();

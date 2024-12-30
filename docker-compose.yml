@@ -3,14 +3,20 @@ services:
     build: ./finnhub
     depends_on:
       - kafka
+    environment:
+      TICKER: AAPL
   twelvedata:
     build: ./twelvedata
     depends_on:
       - kafka
+    environment:
+      TICKER: AAPL
   stockdata:
     build: ./stockdata
     depends_on:
       - kafka
+    environment:
+      TICKER: AAPL
   kafka:
     image: 'bitnami/kafka'
     environment:
