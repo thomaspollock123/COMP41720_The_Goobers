@@ -20,13 +20,13 @@ public class Stock {
     }
 
     public String toString() {
-        return "Stock{" +
-                "APIname = '" + APIname + "'" +
-                ", timestamp = " + timestamp +
-                ", open = " + open +
-                ", close = " + current +
-                ", high = " + high +
-                ", low = " + low +
+        return "{" +
+                "\"APIname\": \"" + APIname + "\"" +
+                ", \"timestamp\": " + timestamp +
+                ", \"open\": " + open +
+                ", \"close\": " + current +
+                ", \"high\": " + high +
+                ", \"low\": " + low +
                 "}";
     }
 
