@@ -43,9 +43,8 @@ def input_preprocessing(data):
 
 def kafka_input(data):
     # Takes transformed data from "ingestion-service" and converts to readable format for predictions
-    data_input = input_preprocessing(data)
-    print(data_input)
-    data_json = json.loads(data_input)
+    #data_input = input_preprocessing(data)
+    data_json = json.loads(data)
     print(data_json)
     input_data = pd.DataFrame([data_json])
     return input_data
@@ -70,7 +69,7 @@ def timestamp_feature_creation(input_dataframe):
     if 'timestamp' not in input_dataframe.columns:
         raise KeyError("'timestamp' column missing in input dataframe")
     input_dataframe['timestamp'] = pd.to_datetime(input_dataframe['timestamp'], unit='s')
-    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[ns]')
+    input_dataframe['timestamp'] = input_dataframe['timestamp'].astype('datetime64[s]')
     input_dataframe['year'] = input_dataframe['timestamp'].dt.year
     input_dataframe['month'] = input_dataframe['timestamp'].dt.month
     input_dataframe['day'] = input_dataframe['timestamp'].dt.day
@@ -100,7 +99,6 @@ def database_insert(input_data):
 def kafka_output(input_dataframe):
     # Converts predictions for Kafka stream transfer and sends to "analytics-service" module
     json_string = input_dataframe.to_json(orient='records')
-    print(json_string)
     output = json.loads(json_string)
     return output
 
@@ -117,7 +115,8 @@ def kafka_pipeline():
             prediction_data = load_data(input_data, model, scaler)
             output_data = kafka_output(prediction_data)
             future = producer.send('stockData', value=output_data[0])
-            future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}"))
+            print(output_data)
+            future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}, {output_data[0]}"))
             future.add_errback(lambda error: print(f"Error sending message: {error}"))
             producer.flush()
     except KafkaError as ke:
@@ -129,4 +128,4 @@ schedule.every(5).seconds.do(kafka_pipeline)
 print("Starting prediction engine...")
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(3)
