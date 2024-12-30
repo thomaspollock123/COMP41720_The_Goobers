@@ -1,2 +1,2 @@
-service/core/AbstractAPIScraper.class
-service/core/Stock.class
+service\core\AbstractAPIScraper.class
+service\core\Stock.class
