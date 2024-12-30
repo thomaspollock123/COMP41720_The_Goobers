@@ -27,9 +27,9 @@ except Exception as e:
 
 def kafka_input(data):
     # Takes transformed data from "ingestion-service" and converts to readable format for predictions
-    print(data)
+    #print(data)
     data_json = json.loads(data)
-    print(data_json)
+    #print(data_json)
     input_data = pd.DataFrame([data_json])
     return input_data
 
@@ -98,6 +98,7 @@ def kafka_pipeline():
             input_data = kafka_input(message.value)
             prediction_data = load_data(input_data, model, scaler)
             output_data = kafka_output(prediction_data)
+            print("Sending output:", output_data)
             future = producer.send('predictions', value=output_data[0])
             future.add_callback(lambda metadata: print(f"Message sent to {metadata.topic}, partition {metadata.partition}"))
             future.add_errback(lambda error: print(f"Error sending message: {error}"))

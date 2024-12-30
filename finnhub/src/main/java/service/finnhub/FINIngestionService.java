@@ -1,5 +1,6 @@
 package service.finnhub;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import service.core.AbstractAPIScraper;
 import service.core.Stock;
@@ -15,15 +16,21 @@ public class FINIngestionService extends AbstractAPIScraper {
 
     @Override
     public Stock transformData(String ticker, String rawData) {
-        JSONObject json = new JSONObject(rawData);
-        return new Stock(
-                ticker,
-                APIname,
-                json.getLong("t"),
-                json.getDouble("o"),
-                json.getDouble("h"),
-                json.getDouble("l"),
-                json.getDouble("c")
-        );
+        try {
+            JSONObject json = new JSONObject(rawData);
+            return new Stock(
+                    ticker,
+                    APIname,
+                    json.getLong("t"),
+                    json.getDouble("o"),
+                    json.getDouble("h"),
+                    json.getDouble("l"),
+                    json.getDouble("c")
+            );
+        } catch (JSONException e) {
+            System.err.println("Failed to transform data: " + rawData);
+            e.printStackTrace();
+            return null;
+        }
     }
 }

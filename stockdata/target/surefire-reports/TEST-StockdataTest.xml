@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="StockdataTest" time="0.267" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="StockdataTest" time="0.248" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IE"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire/surefirebooter-20241230180512021_11.jar /home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire 2024-12-30T18-05-07_521-jvmRun1 surefire-20241230180512021_9tmp surefire_2-20241230180512021_10tmp"/>
+    <property name="sun.java.command" value="/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire/surefirebooter-20241230190949009_11.jar /home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire 2024-12-30T19-09-44_534-jvmRun1 surefire-20241230190949009_9tmp surefire_2-20241230190949009_10tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/test-classes:/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/classes:/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/core/target/core-1.0-SNAPSHOT.jar:/home/kanor/.m2/repository/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar:/home/kanor/.m2/repository/com/github/luben/zstd-jni/1.5.2-1/zstd-jni-1.5.2-1.jar:/home/kanor/.m2/repository/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/home/kanor/.m2/repository/org/xerial/snappy/snappy-java/1.1.8.4/snappy-java-1.1.8.4.jar:/home/kanor/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar:/home/kanor/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/home/kanor/.m2/repository/org/json/json/20240303/json-20240303.jar:/home/kanor/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/home/kanor/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/home/kanor/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/kanor/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/home/kanor/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/kanor/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/home/kanor/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/home/kanor/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire/surefirebooter-20241230180512021_11.jar"/>
+    <property name="surefire.real.class.path" value="/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/stockdata/target/surefire/surefirebooter-20241230190949009_11.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.5+11-Ubuntu-1ubuntu124.04"/>
     <property name="user.name" value="kanor"/>
@@ -53,7 +53,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testTransformData" classname="StockdataTest" time="0.254">
+  <testcase name="testTransformData" classname="StockdataTest" time="0.235">
     <system-err><![CDATA[[main] INFO org.apache.kafka.clients.producer.ProducerConfig - ProducerConfig values: 
 	acks = -1
 	auto.include.jmx.reporter = true
@@ -147,7 +147,7 @@
 [main] INFO org.apache.kafka.clients.producer.KafkaProducer - [Producer clientId=producer-1] Instantiated an idempotent producer.
 [main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka version: 3.4.1
 [main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka commitId: 8a516edc2755df89
-[main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1735581912418
+[main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1735585789373
 [kafka-producer-network-thread | producer-1] INFO org.apache.kafka.clients.NetworkClient - [Producer clientId=producer-1] Node -1 disconnected.
 [kafka-producer-network-thread | producer-1] WARN org.apache.kafka.clients.NetworkClient - [Producer clientId=producer-1] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Broker may not be available.
 [kafka-producer-network-thread | producer-1] WARN org.apache.kafka.clients.NetworkClient - [Producer clientId=producer-1] Bootstrap broker localhost:9092 (id: -1 rack: null) disconnected

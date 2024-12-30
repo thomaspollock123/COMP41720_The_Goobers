@@ -49,9 +49,11 @@ public abstract class AbstractAPIScraper {
                 // Transform the data to Stock object
                 Stock stock = transformData(ticker, rawData);
 
-                // Publish stock object to Kafka topic
-                publishToKafka(stock);
-
+                if (stock != null) {
+                    // Publish stock object to Kafka topic
+                    publishToKafka(stock);
+                }
+                
                 // Wait until next poll
                 waitForPoll();
         }

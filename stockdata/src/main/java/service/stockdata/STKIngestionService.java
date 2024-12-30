@@ -1,6 +1,7 @@
 package service.stockdata;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import service.core.AbstractAPIScraper;
 import service.core.Stock;
@@ -19,31 +20,37 @@ public class STKIngestionService extends AbstractAPIScraper {
 
     @Override
     public Stock transformData(String ticker, String rawData) {
-        JSONObject jsonobj = new JSONObject(rawData);
+        try {
+            JSONObject jsonobj = new JSONObject(rawData);
 
-        // Access the data array
-        JSONArray dataArray = jsonobj.getJSONArray("data");
+            // Access the data array
+            JSONArray dataArray = jsonobj.getJSONArray("data");
 
-        // Access the 0th element of the array
-        JSONObject json = dataArray.getJSONObject(0);
+            // Access the 0th element of the array
+            JSONObject json = dataArray.getJSONObject(0);
 
-        // Define the formatter to match the date-time format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+            // Define the formatter to match the date-time format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
 
-        // Parse the date-time string to a LocalDateTime object
-        LocalDateTime dateTime = LocalDateTime.parse(json.getString("last_trade_time"), formatter);
+            // Parse the date-time string to a LocalDateTime object
+            LocalDateTime dateTime = LocalDateTime.parse(json.getString("last_trade_time"), formatter);
 
-        // Convert to Unix timestamp (seconds since epoch)
-        long unixTimestamp = dateTime.toEpochSecond(ZoneOffset.UTC);
+            // Convert to Unix timestamp (seconds since epoch)
+            long unixTimestamp = dateTime.toEpochSecond(ZoneOffset.UTC);
 
-        return new Stock(
-                ticker,
-                APIname,
-                unixTimestamp,
-                json.getDouble("day_open"),
-                json.getDouble("day_high"),
-                json.getDouble("day_low"),
-                json.getDouble("price")
-        );
+            return new Stock(
+                    ticker,
+                    APIname,
+                    unixTimestamp,
+                    json.getDouble("day_open"),
+                    json.getDouble("day_high"),
+                    json.getDouble("day_low"),
+                    json.getDouble("price")
+            );
+        } catch (JSONException e) {
+            System.err.println("Failed to transform data: " + rawData);
+            e.printStackTrace();
+            return null;
+        }
     }
 }
