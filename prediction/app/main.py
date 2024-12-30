@@ -83,7 +83,6 @@ def database_insert(input_data):
 def kafka_output(input_dataframe):
     # Converts predictions for Kafka stream transfer and sends to "analytics-service" module
     json_string = input_dataframe.to_json(orient='records')
-    print(json_string)
     output = json.loads(json_string)
     return output
 
