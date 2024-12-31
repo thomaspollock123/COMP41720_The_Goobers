@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: StockdataTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.645 s -- in StockdataTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.847 s -- in StockdataTest

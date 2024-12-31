@@ -15,6 +15,10 @@ client = MongoClient(uri)
 db = client["apple_stock"]
 collection = db["stock_data"]
 
+cursor = collection.find().sort("_id", -1).limit(20)
+test = pd.DataFrame(data=cursor).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
+print(test)
+
 model_file = "models/Logistic_Regression_Model_final.pkl"
 try:
     data = load(model_file)
@@ -43,7 +47,7 @@ def load_data(input_data, model, scaler):
     predictions = model.predict(input_dataframe_scaled)
     input_dataframe["prediction"] = predictions
     # Inserts new data into database, enabling will add too many duplicates to the database and mess with the rolling averages. Messed up averages = :'(
-    #database_insert(input_dataframe)
+    database_insert(input_dataframe)
     return input_dataframe
 
 def timestamp_feature_creation(input_dataframe):
@@ -75,8 +79,16 @@ def close_feature_creation(input_dataframe, hist_data):
 
 def database_insert(input_data):
     # Inserts new stock price into MongoDB database
-    input_data = input_data.to_dict(orient="records")
-    collection.insert_many(input_data)
+    last_prediction = collection.find().sort("_id", -1).limit(1)
+    lp_dataframe = pd.DataFrame(data=last_prediction).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
+    last_timestamp = lp_dataframe['timestamp'].iloc[0]  # Get the most recent timestamp value
+    input_timestamp = input_data['timestamp'].iloc[0]
+    if last_timestamp == input_timestamp:
+        print('Duplicate prediction discarded')
+        pass
+    else:
+        input_data = input_data.to_dict(orient="records")
+        collection.insert_many(input_data)
 
 def kafka_output(input_dataframe):
     # Converts predictions for Kafka stream transfer and sends to "analytics-service" module
