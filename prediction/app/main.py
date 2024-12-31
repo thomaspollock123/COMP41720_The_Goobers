@@ -64,6 +64,7 @@ def timestamp_feature_creation(input_dataframe):
     input_dataframe['year_2022'] = 0
     input_dataframe['year_2023'] = 0
     input_dataframe['year_2024'] = 1
+    input_dataframe['year_2025'] = 0
     return input_dataframe
 
 def close_feature_creation(input_dataframe, hist_data):
@@ -80,12 +81,17 @@ def close_feature_creation(input_dataframe, hist_data):
 def database_insert(input_data):
     # Inserts new stock price into MongoDB database
     last_prediction = collection.find().sort("_id", -1).limit(1)
+    last_prediction_list = list(collection.find().sort("_id", -1).limit(3))
     lp_dataframe = pd.DataFrame(data=last_prediction).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-    last_timestamp = lp_dataframe['timestamp'].iloc[0]  # Get the most recent timestamp value
+    lp_dataframe_list = pd.DataFrame(last_prediction_list).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
+    last_timestamp = lp_dataframe['timestamp'].iloc[0]
     input_timestamp = input_data['timestamp'].iloc[0]
+    last_close_price = input_data['close'].iloc[0]
+    last_3_close_prices = lp_dataframe_list['close'].tolist()
     if last_timestamp == input_timestamp:
-        print('Duplicate prediction discarded')
-        pass
+        print('Same date already available in database. Prediction discarded')
+    elif all(close_price == last_close_price for close_price in last_3_close_prices):
+        print('Last three predictions have the same closing price. API duplication detected. Prediction discarded.')
     else:
         input_data = input_data.to_dict(orient="records")
         collection.insert_many(input_data)
