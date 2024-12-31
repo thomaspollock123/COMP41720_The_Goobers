@@ -9,4 +9,6 @@
 
 # Ignore all config.properties files which contain the API keys
 **/config.properties
+**/application.properties
 
+**/node_modules

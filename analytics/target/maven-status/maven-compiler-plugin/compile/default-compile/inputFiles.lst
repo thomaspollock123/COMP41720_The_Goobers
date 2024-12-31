@@ -1,0 +1,9 @@
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\AnalyticsApp.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\config\KafkaConsumerConfig.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\config\PredictionHandler.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\config\WebSocketConfig.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\controller\AnalyticsController.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\model\Prediction.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\repository\PredictionRepository.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\service\AnalyticsService.java
+D:\VaultStorage\KnowledgeVault\Assets\MSc_CS\COMP41720\T5\lifeco-rest\COMP41720_The_Goobers\analytics\src\main\java\analytics\service\PredictionConsumerService.java

@@ -1,0 +1,9 @@
+analytics\controller\AnalyticsController.class
+analytics\repository\PredictionRepository.class
+analytics\config\WebSocketConfig.class
+analytics\config\KafkaConsumerConfig.class
+analytics\model\Prediction.class
+analytics\service\AnalyticsService.class
+analytics\AnalyticsApp.class
+analytics\service\PredictionConsumerService.class
+analytics\config\PredictionHandler.class
