@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Grid2, Paper, Typography } from '@mui/material'
+import {format} from "date-fns";
 
 const columns = [
-    { field: 'timestamp', headerName: 'Timestamp', flex: 1 },
+    {
+        field: 'timestamp',
+        headerName: 'Timestamp',
+        flex: 1,
+        renderCell: (params) => {
+            const value = params.value
+            return value
+                ? format(new Date(value), 'MMM dd, yyyy HH:mm:ss')
+                : '--'
+        }
+    },
     { field: 'open', headerName: 'Open', flex: 1 },
     { field: 'high', headerName: 'High', flex: 1 },
     { field: 'low', headerName: 'Low', flex: 1 },
     { field: 'close', headerName: 'Close', flex: 1 },
-    { field: 'prediction', headerName: 'Prediction', flex: 1 },
+    {
+        field: 'prediction',
+        headerName: 'Prediction',
+        flex: 1,
+        renderCell: (params) => (
+            <span style={{ color: params.value === 1 ? 'green' : 'red' }}>
+                {params.value === 1 ? 'UP' : 'DOWN'}
+            </span>
+        )
+    }
 ]
 
 export default function LiveDataGrid() {
@@ -60,11 +80,10 @@ export default function LiveDataGrid() {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 10,
+                            pageSize: 15,
                         },
                     },
                 }}
-                pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick
                 autoHeight={false}
                 sx={{ height: "100%%"}}

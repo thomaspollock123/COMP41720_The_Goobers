@@ -1,41 +1,54 @@
 package analytics.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "predictions") // TODO: change to 'stock_data'
+import java.time.Instant;
+
+@Document(collection = "stock_data")
 public class Prediction {
 
     @Id
     private String id;
+
     private String ticker;
-    private long timestamp;
+
+    @Indexed
+    private Instant timestamp;
+
     private double open;
     private double high;
     private double low;
     private double close;
+
     private int month;
     private int day;
     private int hour;
     private int minute;
+
     private int year_2022;
     private int year_2023;
     private int year_2024;
+
     private double close_diff;
     private double close_previous_diff;
+
     private double rolling_average_log;
     private double rolling_average_3;
     private double rolling_average_5;
     private double rolling_average_10;
+
     private int year;
     private String APIname;
+
     private int prediction;            // 1 => Up, 0 => Down
 
     public Prediction() { }
 
     public Prediction(
             String ticker,
-            long timestamp,
+            Instant timestamp,
             double open,
             double high,
             double low,
@@ -98,11 +111,11 @@ public class Prediction {
         this.ticker = ticker;
     }
 
-    public long getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 

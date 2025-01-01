@@ -5,7 +5,7 @@ import analytics.service.AnalyticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -31,19 +31,6 @@ public class AnalyticsController {
     }
 
     /**
-     * Returns predictions in a time range, sorted by timestamp desc
-     * GET /api/predictions/{ticker}/history?start=1672531200&end=1672617600
-     */
-    @GetMapping("/{ticker}/history")
-    public List<Prediction> getHistoricalPredictions(
-            @PathVariable("ticker") String ticker,
-            @RequestParam("start") long start,
-            @RequestParam("end") long end
-    ) {
-        return analyticsService.getPredictionsForTickerInRange(ticker, start, end);
-    }
-
-    /**
      * Returns the latest prediction for a ticker.
      * GET /api/predictions/{ticker}/latest
      */
@@ -53,28 +40,41 @@ public class AnalyticsController {
     }
 
     /**
-     * Returns aggregation of predictions over the last x minutes.
-     * GET /api/predictions/{ticker}/aggregation?minutes=10
+     * Returns predictions in a time range, sorted by timestamp desc
+     * GET /api/predictions/{ticker}/history?start=2024-10-03T04:00:00.000Z&end=2024-10-03T08:00:00.000Z
      */
-    @GetMapping("/{ticker}/aggregation")
-    public Map<String, Object> getAggregations(
+    @GetMapping("/{ticker}/history")
+    public List<Prediction> getHistoricalPredictions(
             @PathVariable("ticker") String ticker,
-            @RequestParam("minutes") int minutes
+            @RequestParam("start") String start,
+            @RequestParam("end") String end
     ) {
-        // time window conversion
-        long now = System.currentTimeMillis();
-        long startTimestamp = now - (minutes * 60000L);
-
-        List<Prediction> predictions = analyticsService.getPredictionsForTickerInRange(ticker, startTimestamp, now);
-
-        long upCount = predictions.stream().filter(p -> p.getPrediction() == 1).count();
-        long downCount = predictions.size() - upCount;
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("upCount", upCount);
-        result.put("downCount", downCount);
-        return result;
+        Instant startTime = Instant.parse(start);
+        Instant endTime = Instant.parse(end);
+        return analyticsService.getPredictionsForTickerInRange(ticker, startTime, endTime);
     }
 
+    /**
+     * Returns aggregation of predictions in a given time range or over the last x minutes.
+     * GET /api/predictions/{ticker}/aggregations?start=2024-10-03T04:00:00.000Z&end=2024-10-03T08:00:00.000Z
+     * GET /api/predictions/{ticker}/aggregations?minutes=60
+     */
+    @GetMapping("/{ticker}/aggregations")
+    public Map<String, Object> getAggregations(
+            @PathVariable("ticker") String ticker,
+            @RequestParam(value = "start", required = false) String start,
+            @RequestParam(value = "end", required = false) String end,
+            @RequestParam(value = "minutes", required = false) Integer minutes
+    ) {
+        if (minutes != null) {
+            return analyticsService.getAggregationsByMinutes(ticker, minutes);
+        } else if (start != null && end != null) {
+            Instant startTime = Instant.parse(start);
+            Instant endTime = Instant.parse(end);
+            return analyticsService.getAggregations(ticker, startTime, endTime);
+        } else {
+            throw new IllegalArgumentException("Invalid query parameters. Provide either 'minutes' or 'start' and 'end'.");
+        }
+    }
 
 }

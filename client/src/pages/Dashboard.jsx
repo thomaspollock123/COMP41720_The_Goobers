@@ -3,7 +3,7 @@ import { Grid2, Paper } from '@mui/material'
 
 import NavBar from '../components/NavBar.jsx'
 import LatestSignalCard from '../components/LatestSignalCard.jsx'
-import TenMinSignalCard from '../components/TenMinSignalCard.jsx'
+import LiveSignalCard from '../components/LiveSignalCard.jsx'
 import HourSignalCard from '../components/HourSignalCard.jsx'
 import LiveDataGrid from '../components/LiveDataGrid.jsx'
 import HistoricalChart from '../components/HistoricalChart.jsx'
@@ -14,7 +14,7 @@ export default function Dashboard() {
         <Grid2
             container
             spacing={1}
-            sx={{ width:'99vw', height:'99vh'}}
+            sx={{ width:'99.3vw', height:'98.5vh' }}
             direction="column"
         >
             <Grid2 size={12} >
@@ -27,7 +27,7 @@ export default function Dashboard() {
                             <LatestSignalCard />
                         </Grid2>
                         <Grid2 size={{ xs:12, lg:4 }}>
-                            <TenMinSignalCard />
+                            <LiveSignalCard />
                         </Grid2>
                         <Grid2 size={{ xs:12, lg:5 }}>
                             <HourSignalCard />

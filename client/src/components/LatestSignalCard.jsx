@@ -33,8 +33,10 @@ export default function LatestSignalCard() {
                 <Typography variant="h6">Current Signal</Typography>
                 <Typography
                     variant="h4"
-                    sx={{ mt: 1 }}
-                    color={signal === 'UP ↑' ? 'green' : (signal === 'DOWN ↓' ? 'red' : 'inherit')}
+                    sx={{
+                        mt: 1,
+                        color: signal === 'UP' ? 'green' : (signal === 'DOWN' ? 'red' : 'inherit')
+                    }}
                 >
                     {signal}
                 </Typography>

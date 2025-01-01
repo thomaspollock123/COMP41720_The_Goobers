@@ -4,6 +4,7 @@ import analytics.model.Prediction;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -14,7 +15,7 @@ public interface PredictionRepository extends MongoRepository<Prediction, String
 
     // get predictions for date/time range
     List<Prediction> findByTickerAndTimestampBetweenOrderByTimestampDesc(
-            String ticker, long start, long end
+            String ticker, Instant start, Instant end
     );
 
     // get latest prediction
