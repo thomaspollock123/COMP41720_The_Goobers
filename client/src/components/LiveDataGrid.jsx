@@ -80,7 +80,7 @@ export default function LiveDataGrid() {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 13,
+                            pageSize: 15,
                         },
                     },
                 }}
