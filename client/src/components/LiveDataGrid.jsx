@@ -11,7 +11,7 @@ const columns = [
         renderCell: (params) => {
             const value = params.value
             return value
-                ? format(new Date(value), 'MMM dd, yyyy HH:mm:ss')
+                ? format(new Date(value * 1000), 'MMM dd, yyyy HH:mm:ss')
                 : '--'
         }
     },
@@ -35,7 +35,7 @@ export default function LiveDataGrid() {
     const [rows, setRows] = useState([])
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080/ws/predictions')
+        const ws = new WebSocket('ws://localhost:8081/ws/predictions')
 
         ws.onmessage = (event) => {
             try {
@@ -80,7 +80,7 @@ export default function LiveDataGrid() {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 15,
+                            pageSize: 13,
                         },
                     },
                 }}

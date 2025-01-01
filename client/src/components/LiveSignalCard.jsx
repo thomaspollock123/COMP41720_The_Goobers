@@ -8,7 +8,7 @@ function LiveSignalCard() {
     const ticker = useSelector((state) => state.ticker.value)
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080/ws/predictions')
+        const ws = new WebSocket('ws://localhost:8081/ws/predictions')
 
         ws.onmessage = (event) => {
             try {

@@ -40,7 +40,29 @@ def load_data(input_data, model, scaler):
     input_dataframe = timestamp_feature_creation(input_data)
     cl_local = collection.find().sort("_id", -1).limit(20)
     db_data = pd.DataFrame(data=cl_local).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
+
+    if len(db_data) < 10:
+        print("Insufficient historical data!")
+        return None
+
     input_dataframe = close_feature_creation(input_dataframe, db_data)
+
+    if input_dataframe['close_previous_diff'].isna().any():
+        print("NaN values in close_previous_diff. Setting it to 0")
+        input_dataframe = input_dataframe.assign(close_previous_diff=input_dataframe['close_previous_diff'].fillna(0.0))
+
+    if input_dataframe['rolling_average_3'].isna().any():
+        print("NaN values in 3 day rolling avg. Imputting the close_previous_diff")
+        input_dataframe = input_dataframe.assign(rolling_average_3=input_dataframe['rolling_average_3'].fillna(input_dataframe['close_previous_diff']))
+
+    if input_dataframe['rolling_average_5'].isna().any():
+        print("NaN values in 5 day rolling avg. Imputting the 3 day rolling avg")
+        input_dataframe = input_dataframe.assign(rolling_average_5=input_dataframe['rolling_average_5'].fillna(input_dataframe['rolling_average_3']))
+
+    if input_dataframe['rolling_average_10'].isna().any():
+        print("NaN values in 10 day rolling avg. Imputting the 5 day rolling avg")
+        input_dataframe = input_dataframe.assign(rolling_average_10=input_dataframe['rolling_average_10'].fillna(input_dataframe['rolling_average_5']))
+
     model_order = ["ticker", "timestamp", "open", "high", "low", "close", "month", "day", "hour", "minute", "year_2022", "year_2023", "year_2024", "close_diff", "close_previous_diff", "rolling_average_log", "rolling_average_3", "rolling_average_5", "rolling_average_10", "year", "APIname"]
     input_dataframe = input_dataframe.reindex(columns=model_order)
     input_dataframe_scaled = scaler.transform(input_dataframe.drop(columns=["close_diff", "timestamp", "year", "APIname", "ticker"]))
