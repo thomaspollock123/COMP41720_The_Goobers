@@ -23,9 +23,9 @@ client = MongoClient(uri)
 db = client["apple_stock"]
 collection = db["stock_data"]
 
-#cursor = collection.find().sort("_id", -1).limit(20)
-#test = pd.DataFrame(data=cursor).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
-#print(test)
+cursor = collection.find().sort("_id", -1).limit(20)
+test = pd.DataFrame(data=cursor).sort_values(by="timestamp", ascending=True).drop(columns=["_id"])
+print(test)
 
 model_file = "models/Logistic_Regression_Model_final.pkl"
 try:
@@ -49,11 +49,16 @@ def update_database():
     else:
         print("Database not up to date. Updating now.....")
         # Code below working is dependent on Alpha Vantage API stock data for January being available. Will work if "2025-{month}" is changed to "2024-12" in url but only updates up to Dec 31st.
-        """month = current_time.strftime("%m")
+        month = current_time.strftime("%m")
         url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=1min&outputsize=full&month=2025-{month}&apikey={av_key}&datatype=csv'
-        response = requests.get(url)
-        new_data = response.text
-        csv_data = pd.read_csv(io.StringIO(new_data))
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            new_data = response.text
+            csv_data = pd.read_csv(io.StringIO(new_data))
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to update database: {e}. \nProceeding with stock predictions...")
+            return None
         csv_data["timestamp"] = pd.to_datetime(csv_data["timestamp"])
         csv_data_td = csv_data[(csv_data["timestamp"] >= target_time)]
         csv_data_td = csv_data_td.drop(columns=["volume"])
@@ -64,7 +69,7 @@ def update_database():
         csv_data_td1 = csv_data_td.sort_values(by="timestamp", ascending=True).reset_index(drop=True)
         collection.delete_many({"timestamp": {"$gte": target_time, "$lt": current_time}})
         update = csv_data_td1.to_dict(orient="records")
-        collection.insert_many(update)"""
+        collection.insert_many(update)
 
 def kafka_input(data):
     # Takes transformed data from "ingestion-service" and converts to readable format for predictions
@@ -183,10 +188,9 @@ def kafka_pipeline():
     except Exception as e:
         print(f"Error in pipeline: {e}")
 
-update_database()
-
-schedule.every(5).seconds.do(kafka_pipeline)
 print("Starting prediction engine...")
+update_database()
+schedule.every(5).seconds.do(kafka_pipeline)
 while True:
     schedule.run_pending()
     time.sleep(3)
