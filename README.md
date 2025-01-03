@@ -40,6 +40,14 @@ spring.data.mongodb.uri=mongodb+srv://{username}:{password}@{nameofcluster}.074j
 ```
 Replace `{username}`, `{password}`, `{nameofcluster}`, and `{nameofdatabase}` with your MongoDB shard credentials or the path to your local MongoDB instance.
 
+### .env Configuration
+Create a `.env` file in the root directory (i.e. where the docker-compose.yml, etc. are located):
+```
+ALPHA_VANTAGE_API_KEY=API_KEY
+DATABASE_PASSWORD=DB_PASS
+```
+Replace `API_KEY` and `DB_PASS` with your actual key and password.
+
 ## Deployment
 1. Clone the repository:
    ```bash

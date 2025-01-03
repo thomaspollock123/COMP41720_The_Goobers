@@ -83,6 +83,7 @@ def update_database():
 
         update = csv_data_td1.to_dict(orient="records")
         collection.insert_many(update)
+        print("Successfully updated the database!")
 
 
 def kafka_input(data):

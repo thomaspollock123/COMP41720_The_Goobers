@@ -35,10 +35,12 @@ services:
     build: ./prediction
     depends_on:
     - kafka
+    env_file:
+      - .env
     environment:
       - PYTHON UNBUFFERED=1
-      - ALPHA_VANTAGE_API_KEY=K6QQP60C5DSXN8MU
-      - DATABASE_PASSWORD=C0OZACjKnWMF4GQz
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "8080:8080"
   analytics:
