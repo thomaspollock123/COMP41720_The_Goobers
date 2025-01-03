@@ -65,7 +65,7 @@ Replace `API_KEY` and `DB_PASS` with your actual key and password.
    ```
 4. Access the frontend at `http://localhost:5173/`.
 
-Note: allow up to 30 seconds for the containers to start-up and ,once the frontend has been accessed, a further 15 seconds for the consumer to begin streaming predictions.
+Note: allow up to 30 seconds for the containers to start-up and, once the frontend has been accessed, a further 15 seconds for the analytics service to process and stream predictions.
 
 ## Usage
 - Monitor real-time price updates and predictions in the web interface.
