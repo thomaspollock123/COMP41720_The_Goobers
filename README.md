@@ -1,7 +1,7 @@
 # TickerTrek - Real-Time Distributed Stock Trading System
 
 ## Overview
-This project implements a real-time distributed stock trading system to enable traders to make informed buy/sell decisions on Apple stock. The system uses predictive analytics and visualisations of historical market data to simplify decision making for traders. By integrating multiple APIs, machine learning, and a distributed architecture, this system simulates key functionalities of high-frequency trading systems (HFT), excluding automated trade execution.
+TickerTrek is a real-time, distributed, trading data provision system, created to help traders make informed buy/sell decisions on Apple stock. This distributed system polls three different API providers for financial information (e.g. stock open/close price), processes the data into a standard format, predicts price movement using machine learning, serves the predictions, and aggregates historical price data for access through a simple and intuitive web application UI. Ultimately, this system is a simplified version of a standard high-frequency trading (HFT) system, minus the automated trade execution, which is instead left to the trader to carry out independently.
 
 ## Features
 - **Real-time price updates** via multiple stock price APIs
@@ -65,11 +65,11 @@ Replace `API_KEY` and `DB_PASS` with your actual key and password.
    ```
 4. Access the frontend at `http://localhost:5173/`.
 
-Note: the frontend will not display any data for up to a minute after running the docker compose as the analytics service is slow to start.
+Note: allow up to 30 seconds for the containers to start-up and ,once the frontend has been accessed, a further 15 seconds for the consumer to begin streaming predictions.
 
 ## Usage
 - Monitor real-time price updates and predictions in the web interface.
-- Use the visualisations to make informed trading decisions.
+- Use the visualisations and information provided to make informed trading decisions.
 
 ## Scalability and Fault Tolerance
 - **Kafka**: Distributed, fault-tolerant, and scalable message broker.
