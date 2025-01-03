@@ -41,8 +41,18 @@ services:
       - DATABASE_PASSWORD=C0OZACjKnWMF4GQz
     ports:
       - "8080:8080"
-  #analytics:
-  #  build: analytics
+  analytics:
+    build: ./analytics
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8080"
+  client:
+    build: ./client
+    depends_on:
+      - analytics
+    ports:
+      - "5173:5173"
 
 volumes:
   kafka-data:

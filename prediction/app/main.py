@@ -107,29 +107,14 @@ def load_data(input_data, model, scaler):
 
     input_dataframe = close_feature_creation(input_dataframe, db_data)
 
-    if input_dataframe['close_previous_diff'].isna().any():
-        print("NaN values in close_previous_diff. Setting it to 0")
-        input_dataframe = input_dataframe.assign(close_previous_diff=input_dataframe['close_previous_diff'].fillna(0.0))
+    input_dataframe.fillna({
+        'close_previous_diff': 0.0,
+        'rolling_average_3': input_dataframe['close_previous_diff'],
+        'rolling_average_5': input_dataframe['rolling_average_3'],
+        'rolling_average_10': input_dataframe['rolling_average_5']
+    }, inplace=True)
 
-    if input_dataframe['rolling_average_3'].isna().any():
-        print("NaN values in 3 day rolling avg. Imputing the close_previous_diff")
-        input_dataframe = input_dataframe.assign(
-            rolling_average_3=input_dataframe['rolling_average_3'].fillna(input_dataframe['close_previous_diff']))
-
-    if input_dataframe['rolling_average_5'].isna().any():
-        print("NaN values in 5 day rolling avg. Imputing the 3 day rolling avg")
-        input_dataframe = input_dataframe.assign(
-            rolling_average_5=input_dataframe['rolling_average_5'].fillna(input_dataframe['rolling_average_3']))
-
-    if input_dataframe['rolling_average_10'].isna().any():
-        print("NaN values in 10 day rolling avg. Imputing the 5 day rolling avg")
-        input_dataframe = input_dataframe.assign(
-            rolling_average_10=input_dataframe['rolling_average_10'].fillna(input_dataframe['rolling_average_5']))
-
-    model_order = ["ticker", "timestamp", "open", "high", "low", "close", "month", "day", "hour", "minute", "year_2022",
-                   "year_2023", "year_2024", "close_diff", "close_previous_diff", "rolling_average_log",
-                   "rolling_average_3", "rolling_average_5", "rolling_average_10", "year", "APIname"]
-
+    model_order = ["ticker", "timestamp", "open", "high", "low", "close", "month", "day", "hour", "minute", "year_2022", "year_2023", "year_2024", "close_diff", "close_previous_diff", "rolling_average_log", "rolling_average_3", "rolling_average_5", "rolling_average_10", "year", "APIname"]
     input_dataframe = input_dataframe.reindex(columns=model_order)
     # StandardScaler applied to model features
     input_dataframe_scaled = scaler.transform(
@@ -164,19 +149,52 @@ def timestamp_feature_creation(input_dataframe):
 
 def close_feature_creation(input_dataframe, hist_data):
     """Creates rolling average and price difference features
-    based off of "close" value from incoming stock price"""
-    # "close_diff" = difference between current stock price and latest added to database
-    input_dataframe["close_diff"] = hist_data["close"].diff()[0]
-    # "close_previous_diff" = previous "close_diff" price from last price added
-    input_dataframe["close_previous_diff"] = hist_data["close_diff"].shift()[0]
-    # 'rolling_average_log' = exponentially weighted moving average of the last 5 prices
-    input_dataframe['rolling_average_log'] = hist_data['close_previous_diff'].ewm(span=5, adjust=False).mean()[0]
-    # 'rolling_average_3' = rolling average of the last 3 prices
-    input_dataframe['rolling_average_3'] = hist_data['close_previous_diff'].rolling(window=3).mean()[0]
-    # 'rolling_average_5' = rolling average of the last 5 prices
-    input_dataframe['rolling_average_5'] = hist_data['close_previous_diff'].rolling(window=5).mean()[0]
-    # 'rolling_average_10' = rolling average of the last 10 prices
-    input_dataframe['rolling_average_10'] = hist_data['close_previous_diff'].rolling(window=10).mean()[0]
+    based off of "close" value from incoming stock price
+
+    "close_diff" = difference between current stock price and latest added to database
+    "close_previous_diff" = previous "close_diff" price from last price added
+    'rolling_average_log' = exponentially weighted moving average of the last 5 prices
+    'rolling_average_3' = rolling average of the last 3 prices
+    'rolling_average_5' = rolling average of the last 5 prices
+    'rolling_average_10' = rolling average of the last 10 prices
+    """
+
+    # Ensure there is sufficient historical data and the 'close' column exists
+    if hist_data.empty or 'close' not in hist_data.columns:
+        print("Historical data is empty or missing 'close'. Defaulting all features to 0")
+        input_dataframe["close_diff"] = input_dataframe["close_previous_diff"] = input_dataframe['rolling_average_log'] = input_dataframe['rolling_average_3'] = input_dataframe['rolling_average_5'] = input_dataframe['rolling_average_10'] = 0
+        return input_dataframe
+
+    # Calculate close_diff and create close_previous_diff
+    hist_data["close_diff"] = hist_data["close"].diff()
+    hist_data["close_previous_diff"] = hist_data["close_diff"].shift()
+
+    # Propagate close_previous_diff to the input dataframe
+    input_dataframe["close_previous_diff"] = hist_data["close_previous_diff"].iloc[0] if not hist_data["close_previous_diff"].isnull().all() else None
+
+    # If 'close_previous_diff' is entirely NaN, return NaN for rolling averages
+    if hist_data["close_previous_diff"].isnull().all():
+        print("'close_previous_diff' contains only NaN values. Rolling averages will default to 0.")
+        input_dataframe["close_diff"] = input_dataframe["close_previous_diff"] = input_dataframe['rolling_average_log'] = input_dataframe['rolling_average_3'] = input_dataframe['rolling_average_5'] = input_dataframe['rolling_average_10'] = 0
+        return input_dataframe
+
+    # Calculate rolling averages
+    valid_data = hist_data["close_previous_diff"].dropna()
+
+    if len(valid_data) < 10:
+        print("Insufficient rows in 'close_previous_diff' for rolling averages. Defaulting to 0.")
+        input_dataframe['rolling_average_log'] = input_dataframe['rolling_average_3'] = input_dataframe['rolling_average_5'] = input_dataframe['rolling_average_10'] = 0
+    else:
+        rolling_avg_log = valid_data.ewm(span=5, adjust=False).mean().iloc[-1]
+        rolling_avg_3 = valid_data.rolling(window=3).mean().iloc[-1]
+        rolling_avg_5 = valid_data.rolling(window=5).mean().iloc[-1]
+        rolling_avg_10 = valid_data.rolling(window=10).mean().iloc[-1]
+
+        input_dataframe['rolling_average_log'] = rolling_avg_log
+        input_dataframe['rolling_average_3'] = rolling_avg_3
+        input_dataframe['rolling_average_5'] = rolling_avg_5
+        input_dataframe['rolling_average_10'] = rolling_avg_10
+
     return input_dataframe
 
 
@@ -225,6 +243,7 @@ def kafka_pipeline():
     prediction functions and sends the data through the 'predictions' topic stream for use in the
     'analytics' service.
      """
+    print("Starting Kafka pipeline...")
     try:
         # consumer = KafkaConsumer, fetches currently available data from "stockData" topic stream and
         # deserializes input using lambda function
@@ -243,14 +262,14 @@ def kafka_pipeline():
             # Deserialized KafkaConsumer output passed through "kafka_input()" function
             input_data = kafka_input(message.value)
             prediction_data = load_data(input_data, model, scaler)
-            output_data = kafka_output(prediction_data)
-            # Array-enclosed "output_data" sent through producer topic stream to "analytics" service
-            future = producer.send('predictions', value=output_data[0])
-            future.add_callback(lambda metadata: print(
-                f"Message sent to {metadata.topic}, partition {metadata.partition}, {output_data[0]}"))
-            future.add_errback(lambda error: print(f"Error sending message: {error}"))
-            producer.flush()
-
+            if prediction_data is not None:
+                output_data = kafka_output(prediction_data)
+                # Array-enclosed "output_data" sent through producer topic stream to "analytics" service
+                future = producer.send('predictions', value=output_data[0])
+                future.add_callback(lambda metadata: print(
+                    f"Message sent to {metadata.topic}, partition {metadata.partition}, {output_data[0]}"))
+                future.add_errback(lambda error: print(f"Error sending message: {error}"))
+                producer.flush()
     except KafkaError as ke:
         print(f"Kafka error: {ke}")
     except Exception as e:
