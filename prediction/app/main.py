@@ -76,6 +76,7 @@ def update_database():
 
         # Predictions added automatically to incoming historical data to avoid delay on start-up
         csv_data_td["close_diff"] = csv_data_td["close"].diff().fillna(0)
+        csv_data_td["close_previous_diff"] = csv_data_td["close_diff"].shift().fillna(0)
         csv_data_td["prediction"] = np.where(csv_data_td["close_diff"] >= 0, 1, 0)
         csv_data_td1 = csv_data_td.sort_values(by="timestamp", ascending=True).reset_index(drop=True)
         collection.delete_many({"timestamp": {"$gte": target_time, "$lt": current_time}})
