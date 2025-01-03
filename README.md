@@ -36,9 +36,9 @@ Replace `API_KEY` with your actual API key. Do likewise for finnhub.api.key and 
 Create an `application.properties` file in the `analytics/src/main/resources` directory:
 ```
 spring.kafka.bootstrap-servers=kafka:9092
-spring.data.mongodb.uri=mongodb+srv://{username}:{password}@{nameofcluster}.074jo.mongodb.net/{nameofdatabase}
+spring.data.mongodb.uri=mongodb+srv://thomaspollock:{password}@thegoobercluster.074jo.mongodb.net/apple_stock
 ```
-Replace `{username}`, `{password}`, `{nameofcluster}`, and `{nameofdatabase}` with your MongoDB shard credentials or the path to your local MongoDB instance.
+Replace `{password}` (and other credentials if necessary) with your MongoDB shard credentials or the path to your local MongoDB instance.
 
 ### .env Configuration
 Create a `.env` file in the root directory (i.e. where the docker-compose.yml, etc. are located):
@@ -46,7 +46,7 @@ Create a `.env` file in the root directory (i.e. where the docker-compose.yml, e
 ALPHA_VANTAGE_API_KEY=API_KEY
 DATABASE_PASSWORD=DB_PASS
 ```
-Replace `API_KEY` and `DB_PASS` with your actual key and password.
+Replace `API_KEY` and `DB_PASS` with your actual key and password. You'll have to change the URI in main.py if you're using a different MongoDB node.
 
 ## Deployment
 1. Clone the repository:
