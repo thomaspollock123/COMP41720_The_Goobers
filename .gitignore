@@ -12,3 +12,5 @@
 **/application.properties
 
 **/node_modules
+
+.env
