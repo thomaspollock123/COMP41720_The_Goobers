@@ -1,0 +1,9 @@
+analytics/config/WebSocketConfig.class
+analytics/model/Prediction.class
+analytics/service/PredictionConsumerService.class
+analytics/repository/PredictionRepository.class
+analytics/config/KafkaConsumerConfig.class
+analytics/service/AnalyticsService.class
+analytics/AnalyticsApp.class
+analytics/config/PredictionHandler.class
+analytics/controller/AnalyticsController.class

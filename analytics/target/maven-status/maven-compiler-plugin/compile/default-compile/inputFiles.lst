@@ -1,0 +1,9 @@
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/AnalyticsApp.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/config/KafkaConsumerConfig.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/config/PredictionHandler.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/config/WebSocketConfig.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/controller/AnalyticsController.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/model/Prediction.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/repository/PredictionRepository.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/service/AnalyticsService.java
+/home/kanor/Desktop/Distributed Systems/project/COMP41720_The_Goobers/analytics/src/main/java/analytics/service/PredictionConsumerService.java
