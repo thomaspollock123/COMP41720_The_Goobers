@@ -1,4 +1,4 @@
-# TickerTrek - Real-Time Distributed Stock Trading System
+# TickerTrek - Real-Time Distributed Stock Trading
 
 ## Overview
 TickerTrek is a real-time, distributed, trading data provision system, created to help traders make informed buy/sell decisions on Apple stock. This distributed system polls three different API providers for financial information (e.g. stock open/close price), processes the data into a standard format, predicts price movement using machine learning, serves the predictions, and aggregates historical price data for access through a simple and intuitive web application UI. Ultimately, this system is a simplified version of a standard high-frequency trading (HFT) system, minus the automated trade execution, which is instead left to the trader to carry out independently.
