@@ -39,7 +39,7 @@ services:
       - .env
     environment:
       - PYTHON UNBUFFERED=1
-      - ALPHA_VANTAGE_API_KEY=${DATABASE_PASSWORD}
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "8080:8080"
