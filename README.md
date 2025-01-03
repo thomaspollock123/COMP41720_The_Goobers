@@ -79,7 +79,7 @@ Note: the frontend will not display any data for up to a minute after running th
 
 ## Contributors
 - **Conor O’Mahony**: Data scraping modules, Kafka setup, and Docker Compose configuration.
-- **Thomas Pollock**: Machine learning model, analytics node, and cloud MongoDB setup.
+- **Thomas Pollock**: Machine learning model, prediction node, and cloud MongoDB setup.
 - **Vincentiu Ciuraru-Cucu**: Analytics module, REST APIs, WebSocket endpoints, and frontend development.
 
 ## Future Enhancements
