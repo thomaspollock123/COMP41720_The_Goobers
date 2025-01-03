@@ -31,7 +31,6 @@ function NavBar() {
                     justifyContent: 'space-between',
                 }}
             >
-                {/* Left side: application logo */}
                 <Box
                     component="img"
                     src="/src/assets/TickerTrek.png"
@@ -42,7 +41,6 @@ function NavBar() {
                     }}
                 />
 
-                {/* Right side: Icon + dropdown */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <IconButton color="primary" aria-label="candlestick-chart">
                         <CandlestickChartIcon sx = {{ color: '#5A5A5A'  }}/>
@@ -58,8 +56,6 @@ function NavBar() {
                             }}
                         >
                             <MenuItem value="AAPL">AAPL</MenuItem>
-                            <MenuItem value="GOOGL">GOOGL</MenuItem>
-                            <MenuItem value="AMZN">AMZN</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>

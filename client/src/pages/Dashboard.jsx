@@ -14,13 +14,13 @@ export default function Dashboard() {
         <Grid2
             container
             spacing={1}
-            sx={{ width:'99.3vw', height:'98.5vh' }}
+            sx={{ xs:12 }}
             direction="column"
         >
             <Grid2 size={12} >
                 <NavBar />
             </Grid2>
-            <Grid2 container size={12} sx={{ flex: 1 }}>
+            <Grid2 container size={12}>
                 <Grid2 container size={{ xs:12, lg:5 }} direction="column">
                     <Grid2 container size={{ xs:12 }} >
                         <Grid2 size={{ xs:12, lg:3 }}>

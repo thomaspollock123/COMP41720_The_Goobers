@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Grid2, Paper, Typography } from '@mui/material'
-import {format} from "date-fns";
+import { Paper, Typography } from '@mui/material'
+import { format } from "date-fns";
 
 const columns = [
     {
@@ -67,8 +67,8 @@ export default function LiveDataGrid() {
                 p: 2,
                 height: "100%",
                 boxSizing: "border-box",
-                display: 'grid',
-                gridTemplateRows: 'auto 1fr'
+                display: "flex",
+                flexDirection: "column",
             }}
         >
             <Typography variant="h6" sx={{ mb: 1 }}>
@@ -80,14 +80,14 @@ export default function LiveDataGrid() {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 15,
+                            pageSize: 10,
                         },
                     },
                 }}
                 disableRowSelectionOnClick
-                autoHeight={false}
-                sx={{ height: "100%%"}}
+                sx={{ height: "100%" }}
             />
         </Paper>
+
     )
 }

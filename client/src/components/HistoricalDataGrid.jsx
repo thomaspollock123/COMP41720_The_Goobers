@@ -72,8 +72,8 @@ function HistoricalDataGrid() {
                 p: 2,
                 height: "100%",
                 boxSizing: "border-box",
-                display: 'grid',
-                gridTemplateRows: 'auto 1fr'
+                display: "flex",
+                flexDirection: "column",
             }}
         >
             <Typography variant="h6" sx={{ mb: 1 }}>
@@ -90,7 +90,6 @@ function HistoricalDataGrid() {
                     },
                 }}
                 disableRowSelectionOnClick
-                autoHeight={false}
                 sx={{ height: "100%"}}
             />
         </Paper>
